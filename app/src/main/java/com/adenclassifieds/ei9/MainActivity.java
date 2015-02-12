@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.adenclassifieds.ei9.server.ad_detail_parser;
 import com.onprint.sdk.activity.ScanActivity;
 import com.onprint.sdk.activity.Settings;
 import com.onprint.sdk.core.Scanner;
@@ -44,9 +45,12 @@ public class MainActivity extends ActionBarActivity {
 //            Toast.makeText(getApplicationContext(),im.getTitle(),Toast.LENGTH_SHORT).show();
 //        }
 
-        Intent i = new Intent(MainActivity.this, ScanActivity.class);
+//        Intent i = new Intent(MainActivity.this, ScanActivity.class);
+//
+//        startActivityForResult(i, RETURN_CODE);
 
-        startActivityForResult(i, RETURN_CODE);
+        ad_detail_parser.launchParsing(getApplicationContext(),"31401334");
+
 
     }
 

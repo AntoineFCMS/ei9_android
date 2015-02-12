@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">EI9</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_ad_details">Ad_details</string>
+
+    //URL WS
+    <string name="ad_url">http://www.explorimmo.com/rest/programs/</string>
+
+
+    //Détail d'une annonce
+    <string name="delivery_date">Date de livraison:</string>
+    <string name="modification_date">Date de modification:</string>
+    <string name="ad_type">Type de bien:</string>
+    <string name="immediate_delivery">Livraison immédiate:</string>
+    <string name="info_ask">Demande d\'info</string>
+    <string name="fisc_dispositif">Dispositifs fiscaux:</string>
+    <string name="option">Options:</string>
 </resources>
