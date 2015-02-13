@@ -1,19 +1,15 @@
 package com.adenclassifieds.ei9.server;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
-import com.adenclassifieds.ei9.Ad_details;
+import com.adenclassifieds.ei9.activity.Ad_details;
 import com.adenclassifieds.ei9.R;
 import com.adenclassifieds.ei9.business.Logement;
 import com.adenclassifieds.ei9.business.Program;
 import com.adenclassifieds.ei9.utils.ParserHelper;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -22,10 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
- * Created by antoinegaltier on 11/02/15.
+ * Created by Antoine GALTIER on 11/02/15.
  */
 public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
 
@@ -263,6 +258,7 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
                         else if(name.equals(TAG_UNDER_CONSTRUCTION)){
                             program.setUnderConstruction(Integer.parseInt(text));
                         }
+                        text="";
                 }
                 event = myParser.next();
 

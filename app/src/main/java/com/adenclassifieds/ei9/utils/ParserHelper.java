@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by antoinegaltier on 11/02/15.
+ * Created by Antoine GALTIER on 11/02/15.
  */
 public class ParserHelper {
 

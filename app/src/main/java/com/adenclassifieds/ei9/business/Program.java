@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by antoinegaltier on 11/02/15.
+ * Created by Antoine GALTIER on 11/02/15.
  */
 public class Program {
 
