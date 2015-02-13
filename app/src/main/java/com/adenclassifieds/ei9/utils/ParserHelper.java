@@ -10,26 +10,38 @@ import org.apache.http.params.HttpParams;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by antoinegaltier on 11/02/15.
  */
 public class ParserHelper {
 
-    private static final int timeoutConnection = 3000;
-    private static final int timeoutSocket = 5000;
+    private static final int timeoutConnection = 2000;
+    private static final int readTimeout = 1500;
 
-    public static InputStream getInputStreamFromUrl(String url) throws IOException {
-        HttpParams httpParameters = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    public static InputStream getInputStreamFromUrl(String my_url) throws IOException {
+//        HttpParams httpParameters = new BasicHttpParams();
+//        HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+//        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+//
+//        DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+//        HttpPost httpPost = new HttpPost(url);
+//
+//        HttpResponse httpResponse = httpClient.execute(httpPost);
+//        HttpEntity httpEntity = httpResponse.getEntity();
+//        return httpEntity.getContent();
 
-        DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
-        HttpPost httpPost = new HttpPost(url);
-
-        HttpResponse httpResponse = httpClient.execute(httpPost);
-        HttpEntity httpEntity = httpResponse.getEntity();
-        return httpEntity.getContent();
+        URL url = new URL(my_url);
+        HttpURLConnection conn = (HttpURLConnection)
+                url.openConnection();
+        conn.setReadTimeout(readTimeout);
+        conn.setConnectTimeout(timeoutConnection);
+        conn.setRequestMethod("GET");
+        conn.setDoInput(true);
+        conn.connect();
+        return conn.getInputStream();
     }
 
 }

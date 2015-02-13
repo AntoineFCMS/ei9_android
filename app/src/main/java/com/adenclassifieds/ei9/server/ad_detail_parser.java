@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.adenclassifieds.ei9.Ad_details;
 import com.adenclassifieds.ei9.R;
+import com.adenclassifieds.ei9.business.Logement;
 import com.adenclassifieds.ei9.business.Program;
 import com.adenclassifieds.ei9.utils.ParserHelper;
 
@@ -18,6 +20,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -27,11 +31,12 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
 
     private String ref;
     private String url;
-    private Context ctx;
+    private WeakReference<Ad_details> mActivity = null;
 
     private final String TAG_PROGRAM = "program";
     private final String TAG_TYPE_BIEN = "estateType";
     private final String TAG_MODIFICATION_DATE = "modificationDate";
+    private final String TAG_DELIVERY_DATE = "deliveryDate";
     private final String TAG_REF = "id";
     private final String TAG_IMMEDIATE_DELIVERY = "immediateDelivery";
     private final String TAG_NAME= "name";
@@ -61,20 +66,24 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
     private final String TAG_OPTIONS= "options";
     private final String TAG_OPTION= "option";
     private final String TAG_UNDER_CONSTRUCTION= "underConstruction";
+    private final String TAG_PROMOTER_NAME= "promoterName";
+    private final String TAG_SURFACE_CERTIFICATION= "surfaceCertification";
+    private final String TAG_RCS= "rcs";
+    private final String TAG_FLOOR= "floor";
 
     private Program program;
 
-    public ad_detail_parser(Context ctx, String ref) {
-        this.ctx = ctx;
+    public ad_detail_parser(Ad_details pActivity, String ref) {
+        mActivity = new WeakReference<Ad_details>(pActivity);
         this.ref = ref;
-        url = ctx.getString(R.string.ad_url)+ref;
+        url = mActivity.get().getString(R.string.ad_url)+ref;
     }
 
 
     @Override
     protected void onPostExecute(Boolean result) {
-        if (result) {
-
+        if (result && mActivity.get() != null) {
+            mActivity.get().setProgrammInformation(program);
         }
     }
 
@@ -110,13 +119,69 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
     private void parseXML(XmlPullParser myParser) {
         int event;
         String text=null;
+        String name = null;
         try {
             event = myParser.getEventType();
             program = new Program();
+            Logement logement = null;
             while (event != XmlPullParser.END_DOCUMENT) {
-                String name=myParser.getName();
+                name = myParser.getName();
                 switch (event){
                     case XmlPullParser.START_TAG:
+                        if (name.equals(TAG_CLASSIFIEDS)){
+                            program.setLogements(new ArrayList<Logement>());
+                        }
+                        else if (name.equals(TAG_CLASSIFIED)){
+                            logement = new Logement();
+                            while (!(event == XmlPullParser.END_TAG && name.equals(TAG_CLASSIFIED))) {
+                                switch (event){
+                                    case XmlPullParser.TEXT:
+                                        text = myParser.getText();
+                                        break;
+                                    case XmlPullParser.END_TAG:
+                                        if(name.equals(TAG_SURFACE_UNIT)){
+                                            logement.setSurface_unit(text);
+                                        }
+                                        else if(name.equals(TAG_SURFACE_CERTIFICATION)){
+                                            logement.setSurface_certification(Integer.parseInt(text));
+                                        }
+                                        else if(name.equals(TAG_RCS)){
+                                            logement.setRcs(text);
+                                        }
+                                        else if(name.equals(TAG_CREATION_DATE)){
+                                            logement.setCreation_date(text);
+                                        }
+                                        else if(name.equals(TAG_TYPE_LOGEMENT)){
+                                            logement.setAd_type(text);
+                                        }
+                                        else if(name.equals(TAG_FLOOR)){
+                                            logement.setFloor(text);
+                                        }
+                                        else if(name.equals(TAG_REF)){
+                                            logement.setRef(text);
+                                        }
+                                        else if(name.equals(TAG_MODIFICATION_DATE)){
+                                            logement.setModification_date(text);
+                                        }
+                                        else if(name.equals(TAG_MIN_AMOUNT)){
+                                            logement.setAmount_min(Float.parseFloat(text));
+                                        }
+                                        else if(name.equals(TAG_PHOTO)){
+                                            if (logement.getPhotos_urls() == null){
+                                                logement.setPhotos_urls(new ArrayList<String>());
+                                            }
+                                            logement.getPhotos_urls().add(myParser.getAttributeValue(null,TAG_URL));
+                                        }
+                                        else if(name.equals(TAG_NBROOMS)){
+                                            logement.setNb_rooms(Integer.parseInt(text));
+                                        }
+                                        break;
+                                }
+                                event = myParser.next();
+                                name = myParser.getName();
+                            }
+                            program.getLogements().add(logement);
+                        }
                         break;
                     case XmlPullParser.TEXT:
                         text = myParser.getText();
@@ -126,18 +191,78 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
                         if(name.equals(TAG_NAME)){
                             program.setName(text);
                         }
-//                        else if(name.equals("humidity")){
-//                            humidity = myParser.getAttributeValue(null,"value");
-//                        }
-//                        else if(name.equals("pressure")){
-//                            pressure = myParser.getAttributeValue(null,"value");
-//                        }
-//                        else if(name.equals("temperature")){
-//                            temperature = myParser.getAttributeValue(null,"value");
-//                        }
-//                        else{
-//                        }
-                        break;
+                        else if(name.equals(TAG_PROMOTER_NAME)){
+                            program.setPromoter_name(text);
+                        }
+                        else if(name.equals(TAG_TYPE_BIEN)){
+                            program.setType(text);
+                        }
+                        else if(name.equals(TAG_DELIVERY_DATE)){
+                            program.setDelivery_date(text);
+                        }
+                        else if(name.equals(TAG_MODIFICATION_DATE)){
+                            program.setModification_date(text);
+                        }
+                        else if(name.equals(TAG_REF)){
+                            program.setRef(text);
+                        }
+                        else if(name.equals(TAG_IMMEDIATE_DELIVERY)){
+                            program.setImmediate_delivery(Integer.parseInt(text));
+                        }
+                        else if(name.equals(TAG_NAME)){
+                            program.setName(text);
+                        }
+                        else if(name.equals(TAG_DESCRIPTION)){
+                            program.setDescription(text);
+                        }
+                        else if(name.equals(TAG_DESCRIPTION_PROMOTER)){
+                            program.setDescription_promoter(text);
+                        }
+                        else if(name.equals(TAG_LAWS)){
+                            program.setInvestmentLaws(text);
+                        }
+                        else if(name.equals(TAG_ADDRESS)){
+                            program.setAdress(text);
+                        }
+                        else if(name.equals(TAG_CP)){
+                            program.setCode_postal(text);
+                        }
+                        else if(name.equals(TAG_CITY)){
+                            program.setCity(text);
+                        }
+                        else if(name.equals(TAG_DPT_CODE)){
+                            program.setDpt_code(text);
+                        }
+                        else if(name.equals(TAG_DPT)){
+                            program.setDpt_label(text);
+                        }
+                        else if(name.equals(TAG_COUNTRY)){
+                            program.setCountry(text);
+                        }
+                        else if(name.equals(TAG_REGION)){
+                            program.setRegion(text);
+                        }
+                        else if(name.equals(TAG_LONGITUDE)){
+                            program.setLongitude(Float.parseFloat(text));
+                        }
+                        else if(name.equals(TAG_LATITUDE)){
+                            program.setLatitude(Float.parseFloat(text));
+                        }
+                        else if(name.equals(TAG_OPTION)){
+                            if (program.getOptions() == null){
+                                program.setOptions(new ArrayList<String>());
+                            }
+                            program.getOptions().add(text);
+                        }
+                        else if(name.equals(TAG_PHOTO)){
+                            if (program.getPhotos_urls() == null){
+                                program.setPhotos_urls(new ArrayList<String>());
+                            }
+                            program.getPhotos_urls().add(myParser.getAttributeValue(null,TAG_URL));
+                        }
+                        else if(name.equals(TAG_UNDER_CONSTRUCTION)){
+                            program.setUnderConstruction(Integer.parseInt(text));
+                        }
                 }
                 event = myParser.next();
 
@@ -148,8 +273,8 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
     }
 
     @SuppressLint("NewApi")
-    public static void launchParsing(Context ctx, String ref) {
-        AsyncTask<Void, Integer, Boolean> asynctask = new ad_detail_parser(ctx, ref);
+    public static void launchParsing(Ad_details pActivity, String ref) {
+        AsyncTask<Void, Integer, Boolean> asynctask = new ad_detail_parser(pActivity, ref);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
             asynctask.execute();
         } else {

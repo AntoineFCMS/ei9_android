@@ -42,30 +42,12 @@
     <color name="specificite_tab_1">#b7b7b7</color>
     <color name="specificite_tab_2">#e3e3e3</color>
 
-    <!-- Nouvelle Couleur de PDF -->
+    <!-- Nouvelle Couleur EI9 -->
 
-    <color name="VIEW_BACKGROUND_COLOR">#282828</color>
-    <color name="LIGHT_HIGHLIGHT_COLOR">#2b95cc</color>
-    <color name="DARK_HIGHLIGHT_COLOR">#001c3c</color>
-    <color name="LIGHT_ACTION_COLOR">#d7b876</color>
-    <color name="DARK_ACTION_COLOR">#d7b876</color>
-    <color name="LIGHT_NAVIGATION_BAR_BUTTON_COLOR">#bfbfbf</color>
-    <color name="DARK_NAVIGATION_BAR_BUTTON_COLOR">#8c8c8c</color>
-    <color name="noir">#000000</color>
-    <color name="bleu_clair">#2B95CC</color>
-    <color name="bleu_clair_transparent">#662B95CC</color>
-    <color name="bleu_fonce">#001C3C</color>
-    <color name="gris_clair">#BCBEC0</color>
-    <color name="gris_fonce">#6D6F71</color>
-    <color name="jaune_clair">#D7B876</color> <!-- appuye -->
-    <color name="jaune_fonce">#D7A12F</color> <!-- normal -->
+    <color name="ei9_orange">#f2a026</color>
+    <color name="ei9_dark_orange">#dd8600</color>
+    <color name="ei9_green_blue">#00a1c9</color>
 
-    <color name="elv_btn_pressed">#ff33b5e5</color>
-    <color name="elv_btn_focused">#ff0099cc</color>
-    <color name="elv_btn_normal">#00000000</color>
-    <color name="elv_popup_bg_color">#EE666666</color>
-    <color name="elv_separator_color">#BBBBBB</color>
-    <color name="elv_popup_text_color">#FFFFFF</color>
-    <color name="black_overlay">#66000000</color>
+
 
 </resources>

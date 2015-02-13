@@ -49,8 +49,11 @@ public class MainActivity extends ActionBarActivity {
 //
 //        startActivityForResult(i, RETURN_CODE);
 
-        ad_detail_parser.launchParsing(getApplicationContext(),"31401334");
 
+        Intent i = new Intent(MainActivity.this, Ad_details.class);
+        i.putExtra(Ad_details.TAG_REF,"4229762");
+
+        startActivity(i);
 
     }
 

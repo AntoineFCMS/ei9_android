@@ -1,5 +1,6 @@
 package com.adenclassifieds.ei9.business;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,12 +11,14 @@ public class Program {
 
     private String name;
     private String type;
-    private String date;
+    private String delivery_date;
+    private String modification_date;
     private String ref;
     private int immediate_delivery;
     private List<Logement> logements;
     private String description;
     private String description_promoter;
+    private String promoter_name;
     private String investmentLaws;
     private String adress;
     private String code_postal;
@@ -27,7 +30,7 @@ public class Program {
     private float longitude;
     private float latitude;
     private List<String> options;
-    private List<String> photos_urls;
+    private ArrayList<String> photos_urls;
     private int underConstruction;
 
 
@@ -47,12 +50,20 @@ public class Program {
         this.type = type;
     }
 
-    public String getDate() {
-        return date;
+    public String getDelivery_date() {
+        return delivery_date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDelivery_date(String delivery_date) {
+        this.delivery_date = delivery_date;
+    }
+
+    public String getModification_date() {
+        return modification_date;
+    }
+
+    public void setModification_date(String modification_date) {
+        this.modification_date = modification_date;
     }
 
     public String getRef() {
@@ -175,11 +186,11 @@ public class Program {
         this.options = options;
     }
 
-    public List<String> getPhotos_urls() {
+    public ArrayList<String> getPhotos_urls() {
         return photos_urls;
     }
 
-    public void setPhotos_urls(List<String> photos_urls) {
+    public void setPhotos_urls(ArrayList<String> photos_urls) {
         this.photos_urls = photos_urls;
     }
 
@@ -197,5 +208,13 @@ public class Program {
 
     public void setInvestmentLaws(String investmentLaws) {
         this.investmentLaws = investmentLaws;
+    }
+
+    public String getPromoter_name() {
+        return promoter_name;
+    }
+
+    public void setPromoter_name(String promoter_name) {
+        this.promoter_name = promoter_name;
     }
 }

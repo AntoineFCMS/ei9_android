@@ -8,7 +8,7 @@ import java.util.List;
 public class Logement {
 
     private String surface_unit;
-    private String surface_certification;
+    private int surface_certification;
     private String rcs;
     private String creation_date;
     private String modification_date;
@@ -27,11 +27,11 @@ public class Logement {
         this.surface_unit = surface_unit;
     }
 
-    public String getSurface_certification() {
+    public int getSurface_certification() {
         return surface_certification;
     }
 
-    public void setSurface_certification(String surface_certification) {
+    public void setSurface_certification(int surface_certification) {
         this.surface_certification = surface_certification;
     }
 
