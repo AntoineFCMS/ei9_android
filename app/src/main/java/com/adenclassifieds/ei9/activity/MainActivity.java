@@ -43,7 +43,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         Intent i = new Intent(MainActivity.this, Ad_details.class);
-        i.putExtra(Ad_details.TAG_REF,"4229762");
+        i.putExtra(Ad_details.TAG_REF,"731950");
 
         startActivity(i);
 

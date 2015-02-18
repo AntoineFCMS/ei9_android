@@ -13,11 +13,15 @@ public class Logement {
     private String creation_date;
     private String modification_date;
     private String ad_type;
-    private String floor;
+    private int floor;
     private String ref;
     private float amount_min;
+    private float amount_max;
     private List<String> photos_urls;
     private int nb_rooms;
+    private float surface;
+    private float surface_min;
+    private float surface_max;
 
     public String getSurface_unit() {
         return surface_unit;
@@ -67,11 +71,11 @@ public class Logement {
         this.ad_type = ad_type;
     }
 
-    public String getFloor() {
+    public int getFloor() {
         return floor;
     }
 
-    public void setFloor(String floor) {
+    public void setFloor(int floor) {
         this.floor = floor;
     }
 
@@ -105,5 +109,37 @@ public class Logement {
 
     public void setNb_rooms(int nb_rooms) {
         this.nb_rooms = nb_rooms;
+    }
+
+    public float getSurface() {
+        return surface;
+    }
+
+    public void setSurface(float surface) {
+        this.surface = surface;
+    }
+
+    public float getAmount_max() {
+        return amount_max;
+    }
+
+    public void setAmount_max(float amount_max) {
+        this.amount_max = amount_max;
+    }
+
+    public float getSurface_min() {
+        return surface_min;
+    }
+
+    public void setSurface_min(float surface_min) {
+        this.surface_min = surface_min;
+    }
+
+    public float getSurface_max() {
+        return surface_max;
+    }
+
+    public void setSurface_max(float surface_max) {
+        this.surface_max = surface_max;
     }
 }

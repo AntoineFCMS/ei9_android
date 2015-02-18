@@ -7,18 +7,23 @@ import android.text.Layout;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.adenclassifieds.ei9.R;
+import com.adenclassifieds.ei9.adapter.AdListAdapter;
 import com.adenclassifieds.ei9.adapter.PhotoPagerAdapter;
 import com.adenclassifieds.ei9.business.Program;
 import com.adenclassifieds.ei9.server.ad_detail_parser;
 import com.adenclassifieds.ei9.utils.DrawableManager;
+import com.adenclassifieds.ei9.utils.ListViewInsideScrollView;
 import com.viewpagerindicator.CirclePageIndicator;
 
 
@@ -42,6 +47,7 @@ public class Ad_details extends ActionBarActivity {
     private TableLayout options;
     private ViewPager mPager;
     private CirclePageIndicator indicator;
+    private ListView available_ad_list;
 
     private DrawableManager imagemanager;
 
@@ -64,6 +70,7 @@ public class Ad_details extends ActionBarActivity {
         fisc_label = (TextView) findViewById(R.id.fisc_label);
         info_ask = (Button) findViewById(R.id.info_ask);
         options = (TableLayout) findViewById(R.id.options_tab);
+        available_ad_list = (ListView) findViewById(R.id.available_ad_list);
 
         mPager = (ViewPager) findViewById(R.id.pager);
         indicator = (CirclePageIndicator) findViewById(R.id.indicator);
@@ -74,6 +81,8 @@ public class Ad_details extends ActionBarActivity {
 
         setlistener();
     }
+
+
 
     private void setlistener() {
         info_ask.setOnClickListener(new View.OnClickListener() {
@@ -129,12 +138,19 @@ public class Ad_details extends ActionBarActivity {
                 final String spec = p.getOptions().get(i);
 
                 TableRow new_ligne = new TableRow(this);
+                TableLayout.LayoutParams lp =new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0,4,0,0);
+                new_ligne.setLayoutParams(lp);
+                new_ligne.setBackgroundColor(getResources().getColor(R.color.grey_light));
+
                 final TextView texte = new TextView(this);
                 texte.setText(spec);
                 texte.setTextColor(getResources().getColor(R.color.ei9_green_blue));
                 texte.setGravity(Gravity.RIGHT);
+                texte.setPadding(0,0,4,0);
+
                 new_ligne.addView(texte);
-                options.addView(new_ligne);
+                options.addView(new_ligne,lp);
             }
         }
         else {
@@ -143,7 +159,12 @@ public class Ad_details extends ActionBarActivity {
 
         PhotoPagerAdapter mAdapter = new PhotoPagerAdapter(this, imagemanager, p.getPhotos_urls());
         mPager.setAdapter(mAdapter);
+
         indicator.setViewPager(mPager);
+
+        AdListAdapter adapter = new AdListAdapter(getApplicationContext(), getLayoutInflater(), p.getLogements(), imagemanager);
+        available_ad_list.setAdapter(adapter);
+        ListViewInsideScrollView.setListViewInsideAScrollView(available_ad_list);
 
         progressBar.setVisibility(View.GONE);
         view_info.setVisibility(View.VISIBLE);

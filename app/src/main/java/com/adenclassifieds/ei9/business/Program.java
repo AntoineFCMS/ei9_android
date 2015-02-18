@@ -15,7 +15,7 @@ public class Program {
     private String modification_date;
     private String ref;
     private int immediate_delivery;
-    private List<Logement> logements;
+    private ArrayList<Logement> logements;
     private String description;
     private String description_promoter;
     private String promoter_name;
@@ -82,11 +82,11 @@ public class Program {
         this.immediate_delivery = immediate_delivery;
     }
 
-    public List<Logement> getLogements() {
+    public ArrayList<Logement> getLogements() {
         return logements;
     }
 
-    public void setLogements(List<Logement> logements) {
+    public void setLogements(ArrayList<Logement> logements) {
         this.logements = logements;
     }
 

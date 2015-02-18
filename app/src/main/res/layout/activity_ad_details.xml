@@ -238,12 +238,22 @@
                 android:id="@+id/options_tab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/grey_light"
-                android:divider="@color/white"
-                android:showDividers="middle"
                 android:stretchColumns="*" >
 
             </TableLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="@string/available_ad"/>
+
+            <ListView
+                android:id="@+id/available_ad_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
 
         </LinearLayout>

@@ -18,4 +18,13 @@
     <string name="option">Options:</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="available_ad">Les logements disponibles:</string>
+    <string name="nb_room">Nombre de pièces:</string>
+    <string name="surface">Surface:</string>
+    <string name="etage">Etage:</string>
+    <string name="nc">n/c</string>
+    <string name="from">À partir de </string>
+    <string name="m2">m\u00B2</string>
+    <string name="de">De </string>
+    <string name="a"> à </string>
 </resources>

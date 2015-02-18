@@ -41,6 +41,7 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
     private final String TAG_CREATION_DATE= "creationDate";
     private final String TAG_TYPE_LOGEMENT= "goodType";
     private final String TAG_MIN_AMOUNT= "amountMin";
+    private final String TAG_MAX_AMOUNT= "amountMax";
     private final String TAG_PHOTO= "photo";
     private final String TAG_PHOTOS= "photos";
     private final String TAG_URL= "url";
@@ -65,6 +66,9 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
     private final String TAG_SURFACE_CERTIFICATION= "surfaceCertification";
     private final String TAG_RCS= "rcs";
     private final String TAG_FLOOR= "floor";
+    private final String TAG_SURFACE= "surface";
+    private final String TAG_SURFACE_MIN= "surfaceMin";
+    private final String TAG_SURFACE_MAX= "surfaceMax";
 
     private Program program;
 
@@ -149,8 +153,8 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
                                         else if(name.equals(TAG_TYPE_LOGEMENT)){
                                             logement.setAd_type(text);
                                         }
-                                        else if(name.equals(TAG_FLOOR)){
-                                            logement.setFloor(text);
+                                        else if(name.equals(TAG_FLOOR) && text != null){
+                                            logement.setFloor(Integer.parseInt(text));
                                         }
                                         else if(name.equals(TAG_REF)){
                                             logement.setRef(text);
@@ -161,6 +165,9 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
                                         else if(name.equals(TAG_MIN_AMOUNT)){
                                             logement.setAmount_min(Float.parseFloat(text));
                                         }
+                                        else if(name.equals(TAG_MAX_AMOUNT)){
+                                            logement.setAmount_max(Float.parseFloat(text));
+                                        }
                                         else if(name.equals(TAG_PHOTO)){
                                             if (logement.getPhotos_urls() == null){
                                                 logement.setPhotos_urls(new ArrayList<String>());
@@ -170,6 +177,16 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
                                         else if(name.equals(TAG_NBROOMS)){
                                             logement.setNb_rooms(Integer.parseInt(text));
                                         }
+                                        else if(name.equals(TAG_SURFACE)){
+                                            logement.setSurface(Float.parseFloat(text));
+                                        }
+                                        else if(name.equals(TAG_SURFACE_MIN)){
+                                            logement.setSurface_min(Float.parseFloat(text));
+                                        }
+                                        else if(name.equals(TAG_SURFACE_MAX)){
+                                            logement.setSurface_max(Float.parseFloat(text));
+                                        }
+                                        text = null;
                                         break;
                                 }
                                 event = myParser.next();
