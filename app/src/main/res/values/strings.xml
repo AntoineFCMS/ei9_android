@@ -1,11 +1,15 @@
 <resources>
     <string name="app_name">EI9</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="scan_image">Scanner un bien</string>
     <string name="title_activity_ad_details">Ad_details</string>
+    <string name="scan_no_result">L\'image scannée n\'a pas été reconnue</string>
+    <string name="scan_error">Une erreur a empêchée le scan de l\'image</string>
+    <string name="no_saved_ad">Scanner l\'image d\'un bien pour consulter son annonce</string>
 
     //URL WS
     <string name="ad_url">http://www.explorimmo.com/rest/programs/</string>
+    <string name="contact_form_url">http://www.explorimmoneuf.com/neuf/programme/contacts/ajouter.json</string>
 
 
     //Détail d'une annonce
@@ -27,4 +31,38 @@
     <string name="m2">m\u00B2</string>
     <string name="de">De </string>
     <string name="a"> à </string>
+
+
+
+    //Formulaire de contact
+    <string name="civilite">Civilité</string>
+    <string name="name">Nom</string>
+    <string name="first_name">Prénom</string>
+    <string name="email">Votre email</string>
+    <string name="tel">Votre téléphone</string>
+    <string name="adress">Adresse</string>
+    <string name="cp">Code postal</string>
+    <string name="town">Ville</string>
+    <string name="message">Votre message</string>
+    <string name="send">Envoyer</string>
+    <string name="title_activity_contact_form">Contact_form</string>
+    <string name="error">Erreur</string>
+    <string name="civilite_error">Veuillez choisir une civilité</string>
+
+    <string name="action_settings">Settings</string>
+
+
+    <string name="server_message">Message du serveur!</string>
+    <string name="server_message_ok">Votre demande d\'information a bien été envoyée.</string>
+
+    <string-array name="civilites">
+        <item>M.</item>
+        <item>Mme</item>
+        <item>Mlle</item>
+    </string-array>
+    <string name="title_activity_fullscreen_slider">Fullscreen_slider</string>
+
+    <string name="hello_world">Hello world!</string>
+
+
 </resources>

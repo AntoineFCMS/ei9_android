@@ -23,11 +23,12 @@ import java.util.Map;
 
 
 public class DrawableManager {
-    private final Map<String, SoftReference<Drawable>> drawableMap;
+    private static Map<String, SoftReference<Drawable>> drawableMap;
     public Drawable drawable_res;
 
     public DrawableManager() {
-        drawableMap = new HashMap<String, SoftReference<Drawable>>();
+        if (drawableMap == null)
+            drawableMap = new HashMap<String, SoftReference<Drawable>>();
     }
 
     public Drawable fetchDrawable(String urlString) {
@@ -37,16 +38,16 @@ public class DrawableManager {
         		return res;
         }
 
-        Log.d(this.getClass().getSimpleName(), "image url:" + urlString);
-        
+
+
         InputStream is = null;
         Drawable drawable = null;
         try {
             is = fetch(urlString);
             
         	final BitmapFactory.Options options = new BitmapFactory.Options();
-    		options.inPreferredConfig = Bitmap.Config.RGB_565;
-    		options.inSampleSize = 1;
+//    		options.inPreferredConfig = Bitmap.Config.RGB_565;
+//    		options.inSampleSize = 1;
     		
     		while (drawable == null && options.inSampleSize <= 10) {
     			Log.d("Drawablemanager", String.valueOf(options.inSampleSize));
@@ -101,25 +102,25 @@ public class DrawableManager {
         }
         else {
 
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message message) {
-            	if (progress_circle != null)
-            		progress_circle.setVisibility(View.GONE);
-                imageView.setImageDrawable((Drawable) message.obj);
-            }
-        };
+            final Handler handler = new Handler() {
+                @Override
+                public void handleMessage(Message message) {
+                    if (progress_circle != null)
+                        progress_circle.setVisibility(View.GONE);
+                    imageView.setImageDrawable((Drawable) message.obj);
+                }
+            };
 
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                //TODO : set imageView to a "pending" image
-                Drawable drawable = fetchDrawable(urlString);
-                Message message = handler.obtainMessage(1, drawable);
-                handler.sendMessage(message);
-            }
-        };
-        thread.start();
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    //TODO : set imageView to a "pending" image
+                    Drawable drawable = fetchDrawable(urlString);
+                    Message message = handler.obtainMessage(1, drawable);
+                    handler.sendMessage(message);
+                }
+            };
+            thread.start();
         }
     }
     
@@ -143,6 +144,7 @@ public class DrawableManager {
     }
 
     private InputStream fetch(String urlString) throws MalformedURLException, IOException {
+        Log.d(this.getClass().getSimpleName(), "image url:" + urlString);
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpGet request = new HttpGet(urlString);
         HttpResponse response = httpClient.execute(request);

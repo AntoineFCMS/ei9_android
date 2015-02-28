@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/ad_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ei9_green_blue"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <ImageView
+            android:id="@+id/miniature"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:scaleType="centerCrop" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_weight="60">
+
+            <TextView
+                android:id="@+id/ad_type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="@string/ad_type" />
+
+            <TextView
+                android:id="@+id/ad_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ad_type_label"
+                android:layout_toEndOf="@id/ad_type_label"
+                android:layout_alignTop="@id/ad_type_label"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/nb_room_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/ad_type_label"
+                android:layout_alignStart="@id/ad_type_label"
+                android:layout_below="@id/ad_type_label"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="@string/nb_room" />
+
+            <TextView
+                android:id="@+id/nb_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/nb_room_label"
+                android:layout_toEndOf="@id/nb_room_label"
+                android:layout_alignTop="@id/nb_room_label"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/surface_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/nb_room_label"
+                android:layout_alignStart="@id/nb_room_label"
+                android:layout_below="@id/nb_room_label"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="@string/surface" />
+
+            <TextView
+                android:id="@+id/surface"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/surface_label"
+                android:layout_toEndOf="@id/surface_label"
+                android:layout_alignTop="@id/surface_label"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/etage_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/surface_label"
+                android:layout_alignStart="@id/surface_label"
+                android:layout_below="@id/surface_label"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="@string/etage" />
+
+            <TextView
+                android:id="@+id/etage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/etage_label"
+                android:layout_toEndOf="@id/etage_label"
+                android:layout_alignTop="@id/etage_label"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/black"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:layout_gravity="center"
+            android:src="@drawable/arrow_right"/>
+    </LinearLayout>
+
+</LinearLayout>

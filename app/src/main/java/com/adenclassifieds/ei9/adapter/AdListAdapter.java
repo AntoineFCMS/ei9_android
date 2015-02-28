@@ -51,7 +51,7 @@ public class AdListAdapter extends BaseAdapter{
         ViewHolder holder = null;
 
         if(convertView == null) {
-            convertView = mInflater.inflate(R.layout.ad_row, null);
+            convertView = mInflater.inflate(R.layout.available_ad_row, null);
 
             holder = new ViewHolder();
             holder.price = (TextView) convertView.findViewById(R.id.ad_price);

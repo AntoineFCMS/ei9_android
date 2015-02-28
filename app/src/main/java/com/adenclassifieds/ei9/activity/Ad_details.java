@@ -1,5 +1,6 @@
 package com.adenclassifieds.ei9.activity;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.adenclassifieds.ei9.business.Program;
 import com.adenclassifieds.ei9.server.ad_detail_parser;
 import com.adenclassifieds.ei9.utils.DrawableManager;
 import com.adenclassifieds.ei9.utils.ListViewInsideScrollView;
+import com.adenclassifieds.ei9.utils.MyPreferenceManager;
 import com.viewpagerindicator.CirclePageIndicator;
 
 
@@ -50,6 +52,8 @@ public class Ad_details extends ActionBarActivity {
     private ListView available_ad_list;
 
     private DrawableManager imagemanager;
+
+    private Program program;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,36 +92,69 @@ public class Ad_details extends ActionBarActivity {
         info_ask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(Ad_details.this, Contact_form.class);
+                i.putExtra(Ad_details.TAG_REF,ref);
+                startActivity(i);
+            }
+        });
+        mPager.setOnTouchListener(new View.OnTouchListener() {
+            private float pointX;
+            private float pointY;
+            private int tolerance = 50;
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_MOVE:
+                        return false;
+                    case MotionEvent.ACTION_DOWN:
+                        pointX = event.getX();
+                        pointY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        boolean sameX = pointX + tolerance > event.getX() && pointX - tolerance < event.getX();
+                        boolean sameY = pointY + tolerance > event.getY() && pointY - tolerance < event.getY();
+                        if (sameX && sameY) {
+
+                            Intent i = new Intent(Ad_details.this, Fullscreen_slider.class);
+                            i.putExtra(Fullscreen_slider.TAG_INTENT,program.getPhotos_urls());
+                            startActivity(i);
+
+                        }
+                }
+                return false;
             }
         });
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_ad_details, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_ad_details, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     public void setProgrammInformation(Program p){
+        saveProgrammRef(p);
+        this.program = p;
+
         localisation.setText(p.getName() + ", " + p.getCity() + " - " + p.getCode_postal());
         delivery_date.setText(p.getDelivery_date());
         modification_date.setText(p.getModification_date());
@@ -168,6 +205,10 @@ public class Ad_details extends ActionBarActivity {
 
         progressBar.setVisibility(View.GONE);
         view_info.setVisibility(View.VISIBLE);
+    }
+
+    private void saveProgrammRef(Program p) {
+        MyPreferenceManager.saveAdRef(getApplicationContext(),p.getRef());
     }
 
 }

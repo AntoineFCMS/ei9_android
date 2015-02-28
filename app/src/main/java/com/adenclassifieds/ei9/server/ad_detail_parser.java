@@ -6,6 +6,7 @@ import android.os.Build;
 
 import com.adenclassifieds.ei9.activity.Ad_details;
 import com.adenclassifieds.ei9.R;
+import com.adenclassifieds.ei9.activity.MainActivity;
 import com.adenclassifieds.ei9.business.Logement;
 import com.adenclassifieds.ei9.business.Program;
 import com.adenclassifieds.ei9.utils.ParserHelper;
@@ -24,9 +25,10 @@ import java.util.ArrayList;
  */
 public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
 
-    private String ref;
+    private String[] refs;
     private String url;
-    private WeakReference<Ad_details> mActivity = null;
+    private WeakReference<Ad_details> detailActivity = null;
+    private WeakReference<MainActivity> mainActivity = null;
 
     private final String TAG_PROGRAM = "program";
     private final String TAG_TYPE_BIEN = "estateType";
@@ -70,19 +72,29 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
     private final String TAG_SURFACE_MIN= "surfaceMin";
     private final String TAG_SURFACE_MAX= "surfaceMax";
 
-    private Program program;
+    private ArrayList<Program> programs = new ArrayList<>();
 
     public ad_detail_parser(Ad_details pActivity, String ref) {
-        mActivity = new WeakReference<Ad_details>(pActivity);
-        this.ref = ref;
-        url = mActivity.get().getString(R.string.ad_url)+ref;
+        detailActivity = new WeakReference<Ad_details>(pActivity);
+        url = detailActivity.get().getString(R.string.ad_url);
+        this.refs = new String[1];
+        this.refs[0] = ref;
+    }
+
+    public ad_detail_parser(MainActivity pActivity, String[] refs) {
+        mainActivity = new WeakReference<MainActivity>(pActivity);
+        url = mainActivity.get().getString(R.string.ad_url);
+        this.refs = refs;
     }
 
 
     @Override
     protected void onPostExecute(Boolean result) {
-        if (result && mActivity.get() != null) {
-            mActivity.get().setProgrammInformation(program);
+        if (result) {
+            if (detailActivity != null && programs.size() > 0)
+                detailActivity.get().setProgrammInformation(programs.get(0));
+            else if (mainActivity != null)
+                mainActivity.get().setSavedAdInformation(programs);
         }
     }
 
@@ -99,10 +111,13 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
             myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 
             try {
-                is = ParserHelper.getInputStreamFromUrl(url);
-                myparser.setInput(is, null);
-                parseXML(myparser);
-                is.close();
+                for(int i = 0; i < refs.length; i++) {
+                    url = url+refs[i];
+                    is = ParserHelper.getInputStreamFromUrl(url);
+                    myparser.setInput(is, null);
+                    parseXML(myparser);
+                    is.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -121,7 +136,7 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
         String name = null;
         try {
             event = myParser.getEventType();
-            program = new Program();
+            Program program = new Program();
             Logement logement = null;
             while (event != XmlPullParser.END_DOCUMENT) {
                 name = myParser.getName();
@@ -280,6 +295,7 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
                 event = myParser.next();
 
             }
+            programs.add(program);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -288,6 +304,16 @@ public class ad_detail_parser extends AsyncTask<Void, Integer, Boolean> {
     @SuppressLint("NewApi")
     public static void launchParsing(Ad_details pActivity, String ref) {
         AsyncTask<Void, Integer, Boolean> asynctask = new ad_detail_parser(pActivity, ref);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            asynctask.execute();
+        } else {
+            asynctask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    @SuppressLint("NewApi")
+    public static void launchParsing(MainActivity pActivity, String[] refs) {
+        AsyncTask<Void, Integer, Boolean> asynctask = new ad_detail_parser(pActivity, refs);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
             asynctask.execute();
         } else {
