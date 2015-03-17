@@ -1,3 +1,5 @@
 /build
 
 src/main/res/values/key.xml
+libs/ATInternet.jar
+libs/onprintsdk-release.aar
