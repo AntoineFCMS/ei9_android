@@ -7,6 +7,7 @@ import android.os.Build;
 import com.adenclassifieds.ei9.R;
 import com.adenclassifieds.ei9.activity.Contact_form;
 import com.adenclassifieds.ei9.business.ContactForm;
+import com.adenclassifieds.ei9.utils.xiti;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -115,8 +116,10 @@ public class contact_promoter_parser extends AsyncTask<Void, Integer, Boolean> {
                 }
                 is.close();
 
-                if (code_http == 200 && (line == null || line.isEmpty()))
+                if (code_http == 200 && (line == null || line.isEmpty())) {
                     line = contactActivity.get().getResources().getString(R.string.server_message_ok);
+                    xiti.hit(contactActivity.get().getString(R.string.hit_contact_send));
+                }
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();

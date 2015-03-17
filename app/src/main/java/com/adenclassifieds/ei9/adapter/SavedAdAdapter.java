@@ -43,6 +43,10 @@ public class SavedAdAdapter extends BaseAdapter {
         return programs.get(position);
     }
 
+    public String getRef(int position) {
+        return programs.get(position).getRef();
+    }
+
     @Override
     public long getItemId(int position) {
         return 0;

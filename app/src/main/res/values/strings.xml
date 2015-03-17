@@ -11,6 +11,13 @@
     <string name="ad_url">http://www.explorimmo.com/rest/programs/</string>
     <string name="contact_form_url">http://www.explorimmoneuf.com/neuf/programme/contacts/ajouter.json</string>
 
+    //TAG XITI
+    <string name="hit_scan_onprint">search::onPrint</string>
+    <string name="hit_detail">search::detail programme</string>
+    <string name="hit_slideshow">detail programme::slideshow</string>
+    <string name="hit_contact">search::detail_programme::demande-info</string>
+    <string name="hit_contact_send">search::detail_programme::confirmation_demande-info</string>
+
 
     //Détail d'une annonce
     <string name="delivery_date">Date de livraison:</string>
@@ -59,6 +66,9 @@
         <item>M.</item>
         <item>Mme</item>
         <item>Mlle</item>
+    </string-array>
+    <string-array name="list_menu">
+        <item>Supprimer</item>
     </string-array>
     <string name="title_activity_fullscreen_slider">Fullscreen_slider</string>
 

@@ -23,7 +23,7 @@ public class MyPreferenceManager {
         if (!set.contains(ref))
             set.add(ref);
 
-
+        editor.clear();
         editor.putStringSet(TAG_REFS, set);
         editor.apply();
     }
@@ -31,5 +31,17 @@ public class MyPreferenceManager {
     public static Set<String> getAdsRefs(Context ctx){
         SharedPreferences preferences = android.preference.PreferenceManager.getDefaultSharedPreferences(ctx);
         return preferences.getStringSet(TAG_REFS,null);
+    }
+
+    public static void deleteRef(Context ctx, String ref) {
+        SharedPreferences preferences = android.preference.PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor editor = preferences.edit();
+        Set<String> set  = preferences.getStringSet(TAG_REFS,null);
+        if (set != null){
+            set.remove(ref);
+        }
+        editor.clear();
+        editor.putStringSet(TAG_REFS, set);
+        editor.apply();
     }
 }

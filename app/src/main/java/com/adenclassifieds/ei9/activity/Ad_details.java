@@ -2,10 +2,12 @@ package com.adenclassifieds.ei9.activity;
 
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,6 +28,7 @@ import com.adenclassifieds.ei9.server.ad_detail_parser;
 import com.adenclassifieds.ei9.utils.DrawableManager;
 import com.adenclassifieds.ei9.utils.ListViewInsideScrollView;
 import com.adenclassifieds.ei9.utils.MyPreferenceManager;
+import com.adenclassifieds.ei9.utils.xiti;
 import com.viewpagerindicator.CirclePageIndicator;
 
 
@@ -79,11 +82,20 @@ public class Ad_details extends ActionBarActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         indicator = (CirclePageIndicator) findViewById(R.id.indicator);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("");
+        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        View customNav = LayoutInflater.from(this).inflate(R.layout.actionbar, null); // layout which contains your button.
+        actionBar.setCustomView(customNav, lp);
+        actionBar.setDisplayShowCustomEnabled(true);
+
         imagemanager = new DrawableManager();
 
         ad_detail_parser.launchParsing(this, ref);
 
         setlistener();
+
+        xiti.hit(getString(R.string.hit_detail));
     }
 
 

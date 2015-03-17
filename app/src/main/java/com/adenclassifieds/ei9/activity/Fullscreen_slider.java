@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.adenclassifieds.ei9.R;
 import com.adenclassifieds.ei9.adapter.PhotoPagerAdapter;
 import com.adenclassifieds.ei9.utils.DrawableManager;
+import com.adenclassifieds.ei9.utils.xiti;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class Fullscreen_slider extends ActionBarActivity {
         if (image_list != null)
             feed_pager();
 
-
+        xiti.hit(getString(R.string.hit_slideshow));
     }
 
     private void feed_pager() {

@@ -6,9 +6,12 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +24,7 @@ import com.adenclassifieds.ei9.R;
 import com.adenclassifieds.ei9.business.ContactForm;
 import com.adenclassifieds.ei9.server.contact_promoter_parser;
 import com.adenclassifieds.ei9.utils.EmailValidator;
+import com.adenclassifieds.ei9.utils.xiti;
 
 public class Contact_form extends ActionBarActivity {
 
@@ -58,6 +62,14 @@ public class Contact_form extends ActionBarActivity {
         form_layout = findViewById(R.id.form_layout);
         civilite_spinner = (Spinner) findViewById(R.id.civilite_spinner);
 
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("");
+        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        View customNav = LayoutInflater.from(this).inflate(R.layout.actionbar, null); // layout which contains your button.
+        actionBar.setCustomView(customNav, lp);
+        actionBar.setDisplayShowCustomEnabled(true);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,getResources().getStringArray(R.array.civilites));
 
         civilite_spinner.setAdapter(adapter);
@@ -69,6 +81,7 @@ public class Contact_form extends ActionBarActivity {
             }
         });
 
+        xiti.hit(getString(R.string.hit_contact));
     }
 
     private void attemptLogin() {

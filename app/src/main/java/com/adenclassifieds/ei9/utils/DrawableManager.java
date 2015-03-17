@@ -50,7 +50,7 @@ public class DrawableManager {
 //    		options.inSampleSize = 1;
     		
     		while (drawable == null && options.inSampleSize <= 10) {
-    			Log.d("Drawablemanager", String.valueOf(options.inSampleSize));
+    			//Log.d("Drawablemanager", String.valueOf(options.inSampleSize));
     			try {
     				drawable = Drawable.createFromResourceStream(null, null, is, "src", options);
     			}
@@ -144,7 +144,7 @@ public class DrawableManager {
     }
 
     private InputStream fetch(String urlString) throws MalformedURLException, IOException {
-        Log.d(this.getClass().getSimpleName(), "image url:" + urlString);
+        //Log.d(this.getClass().getSimpleName(), "image url:" + urlString);
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpGet request = new HttpGet(urlString);
         HttpResponse response = httpClient.execute(request);

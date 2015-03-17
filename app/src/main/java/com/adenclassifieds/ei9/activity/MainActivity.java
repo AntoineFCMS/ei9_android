@@ -4,15 +4,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Layout;
+import android.view.ContextMenu;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -23,6 +24,8 @@ import com.adenclassifieds.ei9.business.Program;
 import com.adenclassifieds.ei9.server.ad_detail_parser;
 import com.adenclassifieds.ei9.utils.DrawableManager;
 import com.adenclassifieds.ei9.utils.MyPreferenceManager;
+import com.adenclassifieds.ei9.utils.xiti;
+import com.atinternet.tag.ATTag;
 import com.onprint.sdk.core.BitmapScannerAsyncTask;
 import com.onprint.sdk.core.Scanner;
 import com.onprint.sdk.core.ScannerAsyncTaskCallback;
@@ -33,11 +36,14 @@ import java.util.Set;
 
 
 public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskCallback {
+    //XITI
+    public static ATTag attag = null ;
 
     private static final int SELECT_PICTURE_RESULT_CODE = 1;
     private ListView saved_ref_list;
     private DrawableManager imagemanager;
     private RelativeLayout progress;
+    private SavedAdAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,25 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
         imagemanager = new DrawableManager();
 
         Scanner.setAPIKey(getApplicationContext(), getResources().getString(R.string.onprint));
+
+        xiti.initparam(this);
+
+
+        registerForContextMenu(saved_ref_list);
+
+        final Set<String> set = MyPreferenceManager.getAdsRefs(getApplicationContext());
+        //if (set != null && set.isEmpty() && savedInstanceState == null){
+        if (set != null && set.isEmpty()){
+            pickImage();
+        }
+
+
+
+        ActionBar actionBar = getSupportActionBar();
+        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        View customNav = LayoutInflater.from(this).inflate(R.layout.actionbar, null); // layout which contains your button.
+        actionBar.setCustomView(customNav, lp);
+        actionBar.setDisplayShowCustomEnabled(true);
     }
 
     @Override
@@ -57,8 +82,8 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
         final Set<String> set = MyPreferenceManager.getAdsRefs(getApplicationContext());
         if (set != null && !set.isEmpty())
             ad_detail_parser.launchParsing(this, set.toArray(new String[set.size()]));
-        else
-            setSavedAdInformation(new ArrayList<Program>());
+//            pickImage();
+            //setSavedAdInformation(new ArrayList<Program>());
 
         super.onResume();
     }
@@ -85,6 +110,7 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
             if (photo != null) {
                 BitmapScannerAsyncTask task = new BitmapScannerAsyncTask(this);
                 task.execute(photo);
+                xiti.hit(getString(R.string.hit_scan_onprint));
             }
         }
 
@@ -150,13 +176,14 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
     }
 
     public void setSavedAdInformation(ArrayList<Program> programs) {
+
+
+        adapter = new SavedAdAdapter(getApplicationContext(), getLayoutInflater(),programs,imagemanager);
+        saved_ref_list.setAdapter(adapter);
         View view = getLayoutInflater() .inflate(R.layout.no_saved_ad, null);
         ViewGroup viewGroup= ( ViewGroup)saved_ref_list.getParent();
         viewGroup.addView(view);
         saved_ref_list.setEmptyView(view);
-
-        final SavedAdAdapter adapter = new SavedAdAdapter(getApplicationContext(), getLayoutInflater(),programs,imagemanager);
-        saved_ref_list.setAdapter(adapter);
 
         saved_ref_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -164,5 +191,32 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
                 openAd(((Program) adapter.getItem(position)).getRef());
             }
         });
+
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId()==R.id.list) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(((Program)adapter.getItem(info.position)).getName());
+            String[] menuItems = getResources().getStringArray(R.array.list_menu);
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        MyPreferenceManager.deleteRef(getApplicationContext(),adapter.getRef(info.position));
+        final Set<String> set = MyPreferenceManager.getAdsRefs(getApplicationContext());
+        if (set != null && !set.isEmpty())
+            ad_detail_parser.launchParsing(this, set.toArray(new String[set.size()]));
+        else
+            setSavedAdInformation(new ArrayList<Program>());
+
+        return super.onContextItemSelected(item);
     }
 }
