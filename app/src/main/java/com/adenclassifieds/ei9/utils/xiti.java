@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.adenclassifieds.ei9.R;
 import com.adenclassifieds.ei9.activity.MainActivity;
-import com.atinternet.tag.ATParams;
-import com.atinternet.tag.ATTag;
+import com.at.ATParams;
+import com.at.ATTag;
 
 /**
  * Created by Antoine GALTIER on 17/03/15.

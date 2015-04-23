@@ -25,7 +25,7 @@ import com.adenclassifieds.ei9.server.ad_detail_parser;
 import com.adenclassifieds.ei9.utils.DrawableManager;
 import com.adenclassifieds.ei9.utils.MyPreferenceManager;
 import com.adenclassifieds.ei9.utils.xiti;
-import com.atinternet.tag.ATTag;
+import com.at.ATTag;
 import com.onprint.sdk.core.BitmapScannerAsyncTask;
 import com.onprint.sdk.core.Scanner;
 import com.onprint.sdk.core.ScannerAsyncTaskCallback;
@@ -36,7 +36,6 @@ import java.util.Set;
 
 
 public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskCallback {
-    //XITI
     public static ATTag attag = null ;
 
     private static final int SELECT_PICTURE_RESULT_CODE = 1;
@@ -57,18 +56,20 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
 
         Scanner.setAPIKey(getApplicationContext(), getResources().getString(R.string.onprint));
 
-        xiti.initparam(this);
-
+        xiti.initparam(MainActivity.this);
 
         registerForContextMenu(saved_ref_list);
 
-        final Set<String> set = MyPreferenceManager.getAdsRefs(getApplicationContext());
-        //if (set != null && set.isEmpty() && savedInstanceState == null){
-        if (set != null && set.isEmpty()){
-            pickImage();
-        }
+//        final Set<String> set = MyPreferenceManager.getAdsRefs(getApplicationContext());
+//        //if (set != null && set.isEmpty() && savedInstanceState == null){
+//        if (set != null && set.isEmpty()){
+//            pickImage();
+//        }
 
-
+        View view = getLayoutInflater() .inflate(R.layout.no_saved_ad, null);
+        ViewGroup viewGroup= ( ViewGroup)saved_ref_list.getParent();
+        viewGroup.addView(view);
+        saved_ref_list.setEmptyView(view);
 
         ActionBar actionBar = getSupportActionBar();
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.CENTER_VERTICAL);
@@ -82,8 +83,8 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
         final Set<String> set = MyPreferenceManager.getAdsRefs(getApplicationContext());
         if (set != null && !set.isEmpty())
             ad_detail_parser.launchParsing(this, set.toArray(new String[set.size()]));
-//            pickImage();
-            //setSavedAdInformation(new ArrayList<Program>());
+
+
 
         super.onResume();
     }
@@ -98,14 +99,10 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE_RESULT_CODE) {
+            //saved_ref_list.setVisibility(View.GONE);
             progress.setVisibility(View.VISIBLE);
             Bitmap photo;
             photo = (Bitmap) data.getExtras().get("data");
-
-//            Uri selectedImageUri = data.getData();
-//            String selectedImagePath = getPath(selectedImageUri);
-//
-//            Bitmap imageBitmap = BitmapFactory.decodeFile(selectedImagePath);
 
             if (photo != null) {
                 BitmapScannerAsyncTask task = new BitmapScannerAsyncTask(this);
@@ -127,6 +124,7 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
     @Override
     public void onScanCompleted(ImageScanResponse imageScanResponse) {
         progress.setVisibility(View.GONE);
+        //saved_ref_list.setVisibility(View.VISIBLE);
         if (imageScanResponse != null && imageScanResponse.getResults() != null && !imageScanResponse.getResults().isEmpty() &&
                 imageScanResponse.getResults().get(0).getActions() != null && !imageScanResponse.getResults().get(0).getActions().isEmpty()){
             final String ref = imageScanResponse.getResults().get(0).getActions().get(0).getURL();
@@ -140,6 +138,7 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
     @Override
     public void onScanFailed(Exception e) {
         progress.setVisibility(View.GONE);
+        saved_ref_list.setVisibility(View.VISIBLE);
         Toast.makeText(getApplicationContext(),getString(R.string.scan_error),Toast.LENGTH_SHORT).show();
     }
 
@@ -180,10 +179,7 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
 
         adapter = new SavedAdAdapter(getApplicationContext(), getLayoutInflater(),programs,imagemanager);
         saved_ref_list.setAdapter(adapter);
-        View view = getLayoutInflater() .inflate(R.layout.no_saved_ad, null);
-        ViewGroup viewGroup= ( ViewGroup)saved_ref_list.getParent();
-        viewGroup.addView(view);
-        saved_ref_list.setEmptyView(view);
+
 
         saved_ref_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
