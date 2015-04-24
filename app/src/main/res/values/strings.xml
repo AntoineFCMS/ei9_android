@@ -38,6 +38,8 @@
     <string name="m2">m\u00B2</string>
     <string name="de">De </string>
     <string name="a"> à </string>
+    <string name="Network_ConnectionError_Message">Vérifiez votre connexion Internet.</string>
+    <string name="Network_ConnectionError_Title">Connexion impossible</string>
 
 
 

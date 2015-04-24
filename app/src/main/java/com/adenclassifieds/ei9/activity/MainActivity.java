@@ -1,5 +1,7 @@
 package com.adenclassifieds.ei9.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import com.adenclassifieds.ei9.business.Program;
 import com.adenclassifieds.ei9.server.ad_detail_parser;
 import com.adenclassifieds.ei9.utils.DrawableManager;
 import com.adenclassifieds.ei9.utils.MyPreferenceManager;
+import com.adenclassifieds.ei9.utils.Tools;
 import com.adenclassifieds.ei9.utils.xiti;
 import com.at.ATTag;
 import com.onprint.sdk.core.BitmapScannerAsyncTask;
@@ -43,6 +47,7 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
     private DrawableManager imagemanager;
     private RelativeLayout progress;
     private SavedAdAdapter adapter;
+    private Button button_launch_camera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,26 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
 
         saved_ref_list = (ListView) findViewById(R.id.list);
         progress = (RelativeLayout) findViewById(R.id.progress);
+//        View footerView = getLayoutInflater().inflate(R.layout.action_button_scan, null);
+//        if (footerView!=null){
+//            button_launch_camera = (Button) footerView.findViewById(R.id.button_launch_camera);
+//            saved_ref_list.addFooterView(footerView);
+//
+//            button_launch_camera.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    pickImage();
+//                }
+//            });
+//        }
+        button_launch_camera = (Button) findViewById(R.id.button_launch_camera);
+        button_launch_camera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pickImage();
+                }
+            });
+
 
         imagemanager = new DrawableManager();
 
@@ -72,7 +97,8 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
         saved_ref_list.setEmptyView(view);
 
         ActionBar actionBar = getSupportActionBar();
-        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, Gravity.LEFT | Gravity.CENTER_VERTICAL);
+        actionBar.setDisplayShowTitleEnabled(false);
+        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
         View customNav = LayoutInflater.from(this).inflate(R.layout.actionbar, null); // layout which contains your button.
         actionBar.setCustomView(customNav, lp);
         actionBar.setDisplayShowCustomEnabled(true);
@@ -90,9 +116,25 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
     }
 
     public void pickImage() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, SELECT_PICTURE_RESULT_CODE);
+        if (Tools.isOnline(getApplicationContext())) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, SELECT_PICTURE_RESULT_CODE);
+            }
+        }
+        else {
+            final AlertDialog alertDialog = new  AlertDialog.Builder(this).create();
+            alertDialog.setMessage(getString(R.string.Network_ConnectionError_Message));
+            alertDialog.setTitle(getString(R.string.Network_ConnectionError_Title));
+            alertDialog.setCancelable(false);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.cancel();
+                }
+            });
+            alertDialog.show ();
         }
     }
 
@@ -147,13 +189,13 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        final MenuItem item = menu.findItem(R.id.menu_scan_image);
-        item.getActionView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onOptionsItemSelected(item);
-            }
-        });
+//        final MenuItem item = menu.findItem(R.id.menu_scan_image);
+//        item.getActionView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onOptionsItemSelected(item);
+//            }
+//        });
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -166,10 +208,10 @@ public class MainActivity extends ActionBarActivity implements ScannerAsyncTaskC
         final int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_scan_image) {
-            pickImage();
-            return true;
-        }
+//        if (id == R.id.menu_scan_image) {
+//            pickImage();
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

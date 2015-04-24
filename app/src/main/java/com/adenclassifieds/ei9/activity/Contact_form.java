@@ -6,9 +6,9 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +24,7 @@ import com.adenclassifieds.ei9.R;
 import com.adenclassifieds.ei9.business.ContactForm;
 import com.adenclassifieds.ei9.server.contact_promoter_parser;
 import com.adenclassifieds.ei9.utils.EmailValidator;
+import com.adenclassifieds.ei9.utils.Tools;
 import com.adenclassifieds.ei9.utils.xiti;
 
 public class Contact_form extends ActionBarActivity {
@@ -149,12 +150,29 @@ public class Contact_form extends ActionBarActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
-            ContactForm contactForm = new ContactForm(ville,nom,prenom,adress,code_postal,civilite,ref,email,message);
-            if (!tel.getText().toString().isEmpty())
-                contactForm.setTelephone(tel.getText().toString());
-            if (contactForm != null)
-                contact_promoter_parser.launchParsing(this,contactForm);
+            if (Tools.isOnline(getApplicationContext())) {
+                showProgress(true);
+                ContactForm contactForm = new ContactForm(ville,nom,prenom,adress,code_postal,civilite,ref,email,message);
+                if (!tel.getText().toString().isEmpty())
+                    contactForm.setTelephone(tel.getText().toString());
+                if (contactForm != null)
+                    contact_promoter_parser.launchParsing(this,contactForm);
+            }
+            else {
+                final AlertDialog alertDialog = new  AlertDialog.Builder(this).create();
+                alertDialog.setMessage(getString(R.string.Network_ConnectionError_Message));
+                alertDialog.setTitle(getString(R.string.Network_ConnectionError_Title));
+                alertDialog.setCancelable(false);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.cancel();
+                    }
+                });
+                alertDialog.show ();
+            }
+
         }
     }
 

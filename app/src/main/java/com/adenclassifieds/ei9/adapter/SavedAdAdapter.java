@@ -9,12 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adenclassifieds.ei9.R;
-import com.adenclassifieds.ei9.business.Logement;
 import com.adenclassifieds.ei9.business.Program;
 import com.adenclassifieds.ei9.utils.DrawableManager;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Created by Antoine GALTIER on 20/02/15.

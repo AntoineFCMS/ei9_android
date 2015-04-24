@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Build;
 
-import com.adenclassifieds.ei9.activity.Ad_details;
 import com.adenclassifieds.ei9.R;
+import com.adenclassifieds.ei9.activity.Ad_details;
 import com.adenclassifieds.ei9.activity.MainActivity;
 import com.adenclassifieds.ei9.business.Logement;
 import com.adenclassifieds.ei9.business.Program;

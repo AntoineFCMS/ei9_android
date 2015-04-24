@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-
 import com.adenclassifieds.ei9.R;
 import com.adenclassifieds.ei9.utils.DrawableManager;
 

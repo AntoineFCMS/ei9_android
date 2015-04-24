@@ -1,6 +1,5 @@
 package com.adenclassifieds.ei9.utils;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;

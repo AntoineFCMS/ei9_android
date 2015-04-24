@@ -1,10 +1,8 @@
 package com.adenclassifieds.ei9.activity;
 
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.adenclassifieds.ei9.R;
 import com.adenclassifieds.ei9.adapter.PhotoPagerAdapter;

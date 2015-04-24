@@ -6,8 +6,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TableLayout;
 
-import com.adenclassifieds.ei9.adapter.AdListAdapter;
-
 /**
  * Created by Antoine GALTIER on 17/02/15.
  */
